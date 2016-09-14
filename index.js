@@ -117,12 +117,10 @@ module.exports = class CloudWatchStream extends EventEmitter {
 
             that._cloudWatchLogs.putLogEvents(params, function (error, data) {
                 if (error) {
-                    if (error.retryable) {
-                        if (attempts++ < 5) {
-                            setTimeout(postLogEvents, 100);
-                        } else {
-                            callback(error);
-                        }
+                    if (error.retryable && attempts++ < 5) {
+                        setTimeout(postLogEvents, 100);
+                    } else {
+                        callback(error);
                     }
                 } else {
                     that._sequenceToken = data.nextSequenceToken;
