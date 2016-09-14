@@ -114,6 +114,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
 
         function postLogEvents () {
             params.sequenceToken = that._sequenceToken;
+            console.log('Using sequence token', params.sequenceToken);
 
             that._cloudWatchLogs.putLogEvents(params, function (error, data) {
                 if (error) {
@@ -128,7 +129,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
                     console.error('Got data', data);
                     callback();
                 }
-            })
+            });
         }
 
         postLogEvents();
@@ -137,7 +138,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
     _buildLogEvent (record) {
         return {
             message: JSON.stringify(record, function (key, value) {
-                    if (key === 'time') {
+                    if (key === 'time' || key === 'v') {
                         return undefined;
                     }
                     return value;
