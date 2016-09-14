@@ -64,15 +64,13 @@ module.exports = class CloudWatchStream extends EventEmitter {
                     that._getSequenceToken(callback) },
                 function (callback) { that._postLogEvents(records, callback); }
             ],
-            that._handleError);
-    }
+            function (error) {
+                if (!error) {
+                    return;
+                }
 
-    _handleError (error) {
-        if (!error) {
-            return;
-        }
-
-        this.emit('error', error);
+                that.emit('error', error);
+            });
     }
 
     _getSequenceToken (callback) {
