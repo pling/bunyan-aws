@@ -1,0 +1,31 @@
+{
+  "name": "bunyan-aws",
+  "version": "0.1.0",
+  "description": "Write buynan logs to Amazon Web Services CloudWatch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pling/bunyan-aws.git"
+  },
+  "keywords": [
+    "bunyan",
+    "cloudwatch",
+    "log",
+    "aws",
+    "Amazon"
+  ],
+  "author": "Aaron Schinkowitch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pling/bunyan-aws/issues"
+  },
+  "homepage": "https://github.com/pling/bunyan-aws#readme",
+  "engine": "node >= 4.5.0",
+  "dependencies": {
+    "async": "^2.0.1",
+    "aws-sdk": "2.6.x"
+  }
+}
