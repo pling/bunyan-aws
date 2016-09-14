@@ -38,16 +38,16 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html
 
 ### Log Group
 The log group must exist in CloudWatch. 
-1) Sign into the AWS console
-2) Click on CloudWatch found under Services > Management
-3) Click on Logs
-4) Select Actions > Create log group
+1. Sign into the AWS console
+2. Click on CloudWatch found under Services > Management
+3. Click on Logs
+4. Select Actions > Create log group
 
 ### Log Stream
 You may use an existing log stream. However if the stream is not found,
 it will be created for you. The package assumes it is the only source
-writing to the stream. Errors will occur if other sources write to the
-same stream.
+writing to the stream. **Errors will occur if other sources write to the
+same stream.**
 
 ### CloudWatch Options
 These options are passed directly to the AWS SDK:
