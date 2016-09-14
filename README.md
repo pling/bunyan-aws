@@ -25,8 +25,11 @@ var log = bunyan.createLogger({
         type: 'raw',
         level: 'info',
     }]
-};       
-       
+}; 
+      
+myStream.on('error', function (err) {
+    console.error('Error in Cloud Watch stream', err);
+});       
 ````
 
 ## Configuration
