@@ -99,7 +99,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 }
 
                 that._sequenceToken = stream.uploadSequenceToken;
-                callback(that._sequenceToken);
+                callback(null, that._sequenceToken);
             });
     }
 
