@@ -57,11 +57,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         async.series([
-                function (callback) {
-                    if (!that) {
-                        throw new Error("that not defined");
-                    }
-                    that._getSequenceToken(callback) },
+                function (callback) { that._getSequenceToken(callback) },
                 function (callback) { that._postLogEvents(records, callback); }
             ],
             function (error) {
@@ -76,14 +72,12 @@ module.exports = class CloudWatchStream extends EventEmitter {
     _getSequenceToken (callback) {
         var that = this;
 
-        if (!that) {
-            throw new Error('that not defined');
-        }
-
         if (that._sequenceToken) {
             callback(null, that._sequenceToken);
             return;
         }
+
+        console.log('Describing log streams', {logGroupName: this._logGroupName, logStreamNamePrefix: this._logStreamName});
 
         this._cloudWatchLogs.describeLogStreams(
             {logGroupName: this._logGroupName, logStreamNamePrefix: this._logStreamName},
@@ -102,6 +96,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 });
 
                 if (!stream) {
+                    console.error('Stream not found', data);
+
                     callback(new Error('not implemented: create stream'));
                     return;
                 }
