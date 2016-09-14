@@ -77,8 +77,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
             return;
         }
 
-        console.log('Describing log streams', {logGroupName: this._logGroupName, logStreamNamePrefix: this._logStreamName});
-
         this._cloudWatchLogs.describeLogStreams(
             {logGroupName: this._logGroupName, logStreamNamePrefix: this._logStreamName},
             function (error, data) {
@@ -90,14 +88,12 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 }
 
                 data.logStreams.forEach(function (logStream) {
-                    if (logStream.name === that._logStreamName) {
+                    if (logStream.logStreamName === that._logStreamName) {
                         stream = logStream;
                     }
                 });
 
                 if (!stream) {
-                    console.error('Stream not found', data);
-
                     callback(new Error('not implemented: create stream'));
                     return;
                 }
