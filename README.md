@@ -37,7 +37,8 @@ set the AWS Credentials via one of the first three methods described here:
 http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html
 
 ### Log Group
-The log group must exist in CloudWatch. 
+The log group must exist in CloudWatch.
+
 1. Sign into the AWS console
 2. Click on CloudWatch found under Services > Management
 3. Click on Logs
