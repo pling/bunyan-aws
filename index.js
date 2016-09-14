@@ -132,6 +132,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 }
             })
         }
+
+        postLogEvents();
     }
 
     _buildLogEvent (record) {
