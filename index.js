@@ -16,6 +16,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
         this._cloudWatchLogs = new AWS.CloudWatchLogs(options.cloudWatchOptions);
         this._sequenceToken = null;
         this._timeoutId = null;
+        this._posting = false;
     }
 
     write (record) {
@@ -35,6 +36,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         if (this._buffer.length >= this._bufferLength) {
+            this._clearTimeout();
             this._processBuffer();
         }
 
@@ -45,16 +47,20 @@ module.exports = class CloudWatchStream extends EventEmitter {
         this._timeoutId = setTimeout(function () { that._processBuffer(); }, this._timeout);
     }
 
+    _clearTimeout () {
+        if (!this._timeoutId) {
+            return;
+        }
+
+        clearTimeout(this._timeoutId);
+        this._timeoutId = null;
+    }
+
     _processBuffer () {
         var that = this,
             records = this._buffer;
 
         this._buffer = [];
-
-        if (this._timeoutId) {
-            clearTimeout(this._timeoutId);
-            this._timeoutId = null;
-        }
 
         async.series([
                 function (callback) { that._getSequenceToken(callback) },
@@ -110,13 +116,23 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 logStreamName: this._logStreamName,
                 sequenceToken: this._sequenceToken,
                 logEvents: records.map(this._buildLogEvent)
-            }, attempts = 0;
+            },
+            attempts = 0;
 
         function postLogEvents () {
             params.sequenceToken = that._sequenceToken;
             console.log('Using sequence token', params.sequenceToken);
 
+            if (that._posting) {
+                console.log('Waiting due to simultaneous post');
+                setTimeout(postLogEvents, 100);
+                return;
+            }
+
+            that._posting = true;
+
             that._cloudWatchLogs.putLogEvents(params, function (error, data) {
+                that._posting = false;
                 if (error) {
                     if (error.retryable && attempts++ < 5) {
                         setTimeout(postLogEvents, 100);
