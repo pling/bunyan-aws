@@ -57,7 +57,11 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         async.series([
-                that._getSequenceToken,
+                function (callback) {
+                    if (!that) {
+                        throw new Error("that not defined");
+                    }
+                    that._getSequenceToken(callback) },
                 function (callback) { that._postLogEvents(records, callback); }
             ],
             that._handleError);
