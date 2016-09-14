@@ -19,7 +19,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
     }
 
     write (record) {
-        if (typeof data !== 'object') {
+        if (typeof record !== 'object') {
             throw new Error('bunyan-aws requires a raw stream. Please define the type as raw when setting up the bunyan stream.');
         }
 
