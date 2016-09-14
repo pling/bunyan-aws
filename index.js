@@ -36,6 +36,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         if (this._buffer.length >= this._bufferLength) {
+            console.error('Buffer full');
             this._processBuffer();
         }
 
@@ -43,7 +44,9 @@ module.exports = class CloudWatchStream extends EventEmitter {
             return;
         }
 
-        this._timeoutId = setTimeout(function () { that._processBuffer(); }, this._timeout);
+        this._timeoutId = setTimeout(function () {
+            console.error('Buffer timeout');
+            that._processBuffer(); }, this._timeout);
     }
 
     _clearTimeout () {
@@ -105,7 +108,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
                     return;
                 }
 
-                that._sequenceToken = stream.uploadSequenceToken;
+                that._sequenceToken = stream.uploadSequenceToken || null;
                 callback(null, that._sequenceToken);
             });
     }
@@ -120,7 +123,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
         this._cloudWatchLogs.createLogStream(params, function(err, data) {
             if (data) {
                 console.error('Created log stream', data);
-                that._sequenceToken = 'NEW';
+                that._sequenceToken = null;
             }
 
             callback(err, data);
