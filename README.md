@@ -33,8 +33,8 @@ var log = bunyan.createLogger({
 
 ### AWS Credentials
 This package uses the AWS SDK to write the logs to CloudWatch. You must
-set the AWS Credentials via one of the first three methods described here:
-http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html
+set the AWS Credentials via one of the first three methods described 
+[here](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html).
 
 ### Log Group
 The log group must exist in CloudWatch.
@@ -51,5 +51,11 @@ writing to the stream. **Errors will occur if other sources write to the
 same stream.**
 
 ### CloudWatch Options
-These options are passed directly to the AWS SDK:
-http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CloudWatchLogs.html#constructor-property
+These options are passed directly to the
+ [AWS SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CloudWatchLogs.html#constructor-property)
+
+
+## Credits
+This project was created by Aaron Schinkowitch (@schinkowitch), and
+is based on the work of [Mirko Kiefer's bunyan-cloudwatch](https://github.com/mirkokiefer/bunyan-cloudwatch)
+and [Maurice Butler's bunyan-loggly](https://github.com/MauriceButler/bunyan-loggly).
