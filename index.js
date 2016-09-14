@@ -101,13 +101,30 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 });
 
                 if (!stream) {
-                    callback(new Error('not implemented: create stream'));
+                    that._createLogStream(callback);
                     return;
                 }
 
                 that._sequenceToken = stream.uploadSequenceToken;
                 callback(null, that._sequenceToken);
             });
+    }
+
+    _createLogStream (callback) {
+        var that = this,
+            params = {
+                logGroupName: this._logGroupName,
+                logStreamName: this._logStreamName
+            };
+
+        this._cloudWatchLogs.createLogStream(params, function(err, data) {
+            if (data) {
+                console.error('Created log stream', data);
+                that._sequenceToken = 'NEW';
+            }
+
+            callback(err, data);
+        });
     }
 
     _postLogEvents (records, callback) {
@@ -122,10 +139,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
 
         function postLogEvents () {
             params.sequenceToken = that._sequenceToken;
-            console.log('Using sequence token', params.sequenceToken);
 
             if (that._posting) {
-                console.log('Waiting due to simultaneous post');
                 setTimeout(postLogEvents, 100);
                 return;
             }
@@ -143,7 +158,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 } else {
                     that._sequenceToken = data.nextSequenceToken;
 
-                    console.error('Got data', data);
                     callback();
                 }
             });
