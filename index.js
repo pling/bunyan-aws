@@ -57,10 +57,10 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         async.series([
-                this._getSequenceToken,
+                that._getSequenceToken,
                 function (callback) { that._postLogEvents(records, callback); }
             ],
-            this._handleError);
+            that._handleError);
     }
 
     _handleError (error) {
@@ -74,8 +74,12 @@ module.exports = class CloudWatchStream extends EventEmitter {
     _getSequenceToken (callback) {
         var that = this;
 
-        if (this._sequenceToken) {
-            callback(null, this._sequenceToken);
+        if (!that) {
+            throw new Error('that not defined');
+        }
+
+        if (that._sequenceToken) {
+            callback(null, that._sequenceToken);
             return;
         }
 
@@ -129,7 +133,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 } else {
                     that._sequenceToken = data.nextSequenceToken;
 
-                    console.log('Got data', data);
+                    console.error('Got data', data);
                     callback();
                 }
             })
