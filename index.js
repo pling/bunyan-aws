@@ -36,7 +36,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         if (this._buffer.length >= this._bufferLength) {
-            console.error('Buffer full');
             this._processBuffer();
         }
 
@@ -44,8 +43,9 @@ module.exports = class CloudWatchStream extends EventEmitter {
             return;
         }
 
+        console.log(new Date().toISOString() + ': adding timeout');
         this._timeoutId = setTimeout(function () {
-            console.error('Buffer timeout');
+            console.error(new Date().toISOString() + ': processing timeout');
             that._processBuffer(); }, this._timeout);
     }
 
@@ -76,6 +76,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 }
 
                 that.emit('error', error);
+
+                console.log(new Date().toISOString() + ': done processing buffer');
             });
     }
 
@@ -122,7 +124,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
 
         this._cloudWatchLogs.createLogStream(params, function(err, data) {
             if (data) {
-                console.error('Created log stream', data);
                 that._sequenceToken = null;
             }
 
