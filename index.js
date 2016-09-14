@@ -36,7 +36,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
         }
 
         if (this._buffer.length >= this._bufferLength) {
-            this._clearTimeout();
             this._processBuffer();
         }
 
@@ -61,6 +60,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
             records = this._buffer;
 
         this._buffer = [];
+
+        that._clearTimeout();
 
         async.series([
                 function (callback) { that._getSequenceToken(callback) },
