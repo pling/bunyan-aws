@@ -9,8 +9,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
         super();
 
         this._buffer = [];
-        this._bufferLength = options.bufferLength > 0 ? options.bufferLength : 100;
-        this._timeout = options.timeout > 0 ? options.timeout : 100;
+        this._bufferLength = options.bufferLength > 0 ? options.bufferLength : 500; // Buffer 500 records
+        this._timeout = options.timeout > 0 ? options.timeout : 1000; // Empty buffer after 1 second
         this._logGroupName = options.logGroupName;
         this._logStreamName = options.logStreamName;
         this._cloudWatchLogs = new AWS.CloudWatchLogs(options.cloudWatchOptions);
@@ -43,10 +43,7 @@ module.exports = class CloudWatchStream extends EventEmitter {
             return;
         }
 
-        console.log(new Date().toISOString() + ': adding timeout');
-        this._timeoutId = setTimeout(function () {
-            console.error(new Date().toISOString() + ': processing timeout');
-            that._processBuffer(); }, this._timeout);
+        this._timeoutId = setTimeout(function () { that._processBuffer(); }, this._timeout);
     }
 
     _clearTimeout () {
@@ -76,8 +73,6 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 }
 
                 that.emit('error', error);
-
-                console.log(new Date().toISOString() + ': done processing buffer');
             });
     }
 
