@@ -25,10 +25,10 @@
   "homepage": "https://github.com/pling/bunyan-aws#readme",
   "engine": "node >= 4.5.0",
   "dependencies": {
-    "async": "^3.1.0",
-    "aws-sdk": "^2.606.0"
+    "async": "^3.1.0"
   },
   "peerDependencies": {
-    "bunyan": ">= 1.8.1"
+    "bunyan": ">= 1.8.1",
+    "aws-sdk": ">= 2.606.0"
   }
 }
