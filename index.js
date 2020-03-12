@@ -151,7 +151,8 @@ module.exports = class CloudWatchStream extends EventEmitter {
                 if (error) {
                     if (error.retryable && attempts++ < 5) {
                         setTimeout(postLogEvents, 100);
-                    } else if (error.code === 'InvalidSequenceTokenException') {
+                    } else if (error.code === 'InvalidSequenceTokenException'
+                            || error.code === 'DataAlreadyAcceptedException') {
                         delete that._sequenceToken;
                         that._getSequenceToken(postLogEvents)
                     } else {
