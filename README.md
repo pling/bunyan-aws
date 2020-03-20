@@ -61,4 +61,5 @@ These options are passed directly to the
 ## Credits
 This project was created by Aaron Schinkowitch (@schinkowitch), and
 is based on the work of [Mirko Kiefer's bunyan-cloudwatch](https://github.com/mirkokiefer/bunyan-cloudwatch)
-and [Maurice Butler's bunyan-loggly](https://github.com/MauriceButler/bunyan-loggly).
+and [Maurice Butler's bunyan-loggly](https://github.com/MauriceButler/bunyan-loggly). 
+[Hao Nguyen](https://github.com/hao4) has made several fixes and improvements.
