@@ -1,6 +1,6 @@
 {
   "name": "bunyan-aws",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Write buynan logs to Amazon Web Services CloudWatch",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/pling/bunyan-aws#readme",
   "engine": "node >= 4.5.0",
   "dependencies": {
-    "async": "^3.1.0"
+    "async": "^3.2.0"
   },
   "peerDependencies": {
     "bunyan": ">= 1.8.1",
