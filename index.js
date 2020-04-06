@@ -120,9 +120,12 @@ module.exports = class CloudWatchStream extends EventEmitter {
         this._cloudWatchLogs.createLogStream(params, function(err, data) {
             if (data) {
                 that._sequenceToken = null;
+                callback(null, data);
+            } else if (err.code === 'ResourceAlreadyExistsException') {
+                that._getSequenceToken(callback);
+            } else {
+                callback(err, data);
             }
-
-            callback(err, data);
         });
     }
 
